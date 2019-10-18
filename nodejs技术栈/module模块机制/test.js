@@ -1,4 +1,3 @@
-module.exports = {
-  a: 1,
-  test: () => {}
-}
+var b = require('./b.js');
+var a = require('./a.js');
+// b.callAmodule();

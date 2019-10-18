@@ -1,8 +1,9 @@
 console.log('b模块start');
 
+// exports.test = 2;
 module.exports = {
-  test: 2 
-};
+  test: 2
+}
 
 const a = require('./a');
 
