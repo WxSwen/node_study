@@ -20,6 +20,25 @@
 // 与 WebGL 项目有关。所谓 WebGL，就是指浏览器与显卡之间的通信接口，为了满足 JavaScript 与显卡之间大量的、实时的数据交换，它们之间的数据通信必须是二进制的，而不能是传统的文本格式。
 // 文本格式传递一个 32 位整数，两端的 JavaScript 脚本与显卡都要进行格式转化，将非常耗时。这时要是存在一种机制，可以像 C 语言那样，直接操作字节，将 4 个字节的 32 位整数，以二进制形式原封不动地送入显卡，脚本的性能就会大幅提升
 
+
+// arraybuffer 考虑溢出情况
+// 正向溢出（overflow）：当输入值大于当前数据类型的最大值，结果等于当前数据类型的最小值加上余值，再减去 1。
+// 负向溢出（underflow）：当输入值小于当前数据类型的最小值，结果等于当前数据类型的最大值减去余值的绝对值，再加上 1。
+// 是否溢出 -> 超出位数，只会保留对应后位 -> 正向/反向溢出计算
+
+// 使用场景
+// ajax  responseType：‘arraybuffer’
+// canvas 
+// socket socket.binaryType = 'arraybuffer';
+// Fetch API 取回的数据，就是ArrayBuffer对象。
+
+// file 
+// const file = fileInput.files[0];
+// const reader = new FileReader();
+// reader.readAsArrayBuffer(file);
+
+// Web worker
+
 function cipher(str) {
   try {
     const crypto = require('crypto');
