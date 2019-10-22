@@ -42,10 +42,13 @@
 function cipher(str) {
   try {
     const crypto = require('crypto');
-    const cipher = crypto.createCipheriv('des-ecb', '123456');
+    // defaults to 16 bytes
+    const cipher = crypto.createCipheriv('des-ecb', '12345678', '');
 
     let encrypted = cipher.update(str, 'utf8', 'hex');
-    console.log(cipher.final('hex'));
+    console.log(encrypted); // 28dba02eb5f6dd479a6144f98622a55c
+    // outputEncoding <string> 返回值的字符编码。
+    // 一旦 cipher.final() 方法被调用， Cipher 对象就不能再用于加密数据。 如果试图再次调用 cipher.final()，将会抛出一个错误。
     encrypted += cipher.final('hex');
 
     return encrypted;
@@ -54,3 +57,44 @@ function cipher(str) {
     return e.message || e;
   }
 }
+// console.log(cipher('hello world ！！！'));
+// 28dba02eb5f6dd479a6144f98622a55caa67f06240f93005
+
+
+
+
+function decipher(encrypted) {
+  try {
+    const crypto = require('crypto');
+
+    const decipher = crypto.createCipheriv('des-ecb', '12345678', '');
+
+    let decrypted = decipher.update(encrypted, 'hex', 'utf-8');
+    decrypted += decipher.final('utf8');
+
+    return decrypted;
+  } catch(e) {
+    console.log('解密失败');
+
+    return e.message || e;
+  }
+}
+// console.log(decipher('28dba02eb5f6dd479a6144f98622a55caa67f06240f93005'));
+
+
+// md5类
+// 是让大容量信息在数字签名软件签署私人秘钥前被 “压缩” 成一种保密格式，也就是把一个任意长度的字节串变换成一定长度的十六进制数字串（32个字符） 一致性验证
+
+// 特点
+// 不可逆
+// 输入两个不同的明文不会得到相同的输出值
+// 根据输出值，不能得到原始的明文，即过程不可逆
+
+const crypto = require('crypto');
+const md5 = str => {
+  return crypto.createHash('md5').update(str, 'utf8').digest('hex');
+};
+
+console.log(md5('123456789'));
+
+console.log(md5('123456789').toUpperCase());
