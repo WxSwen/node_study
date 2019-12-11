@@ -101,3 +101,15 @@ function close(code) {
   }
   process.exit(0);
 }
+
+
+// 为什么一个端口能监听多个进程？
+// 1. 端口由master监听一次
+// 2. 内部会区分matser和worker进程
+// 3. 如果是worker进程会通过cluster._getServer去hack原生listener方法
+// 4. child调用的是返回0的方法，所以不会报端口占用错误
+
+// worker进程如何监听master服务的connect？
+// 监听master进程启动的tcp的connection事件
+// 通过轮询挑选一个worker
+// 向其发送newconn内部消息，包含客户端句柄
